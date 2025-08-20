@@ -18,47 +18,53 @@ interface Reporte {
 const ListasReportes: React.FC = () => {
   const navigate = useNavigate();
   const [listas, setListas] = useState<Reporte[]>([
-  {
-    id_reporte: 1,
-    nombre_usuario: "Juan Pérez",
-    cargo_usuario: "Supervisor",
-    cedula: 123456789,
-    fecha: "2025-08-10T14:30:00Z",
-    lugar: "Bodega Central",
-    descripcion: "Caída de estantería en la zona de carga",
-    img: "https://via.placeholder.com/150",
-    archivos: "informe.pdf",
-    estado: "Pendiente",
-  },
-  {
-    id_reporte: 2,
-    nombre_usuario: "María López",
-    cargo_usuario: "Operaria",
-    cedula: 987654321,
-    fecha: "2025-08-11T09:15:00Z",
-    lugar: "Planta 2",
-    descripcion: "Fuga de aceite en maquinaria",
-    img: "https://via.placeholder.com/150",
-    archivos: "reporte_fuga.docx",
-    estado: "Revisado",
-  },
-  {
-    id_reporte: 3,
-    nombre_usuario: "Carlos Ramírez",
-    cargo_usuario: "Técnico",
-    cedula: 112233445,
-    fecha: "2025-08-12T16:45:00Z",
-    lugar: "Área de mantenimiento",
-    descripcion: "Cortocircuito en tablero eléctrico",
-    img: "https://via.placeholder.com/150",
-    archivos: "foto_incidente.jpg",
-    estado: "Finalizado",
-  },
-]);
+    {
+      id_reporte: 1,
+      nombre_usuario: "Juan Pérez",
+      cargo_usuario: "Supervisor",
+      cedula: 123456789,
+      fecha: "2025-08-10T14:30:00Z",
+      lugar: "Bodega Central",
+      descripcion: "Caída de estantería en la zona de carga",
+      img: "https://via.placeholder.com/150",
+      archivos: "informe.pdf",
+      estado: "Pendiente",
+    },
+    {
+      id_reporte: 2,
+      nombre_usuario: "María López",
+      cargo_usuario: "Operaria",
+      cedula: 987654321,
+      fecha: "2025-08-11T09:15:00Z",
+      lugar: "Planta 2",
+      descripcion: "Fuga de aceite en maquinaria",
+      img: "https://via.placeholder.com/150",
+      archivos: "reporte_fuga.docx",
+      estado: "Revisado",
+    },
+    {
+      id_reporte: 3,
+      nombre_usuario: "Carlos Ramírez",
+      cargo_usuario: "Técnico",
+      cedula: 112233445,
+      fecha: "2025-08-12T16:45:00Z",
+      lugar: "Área de mantenimiento",
+      descripcion: "Cortocircuito en tablero eléctrico",
+      img: "https://via.placeholder.com/150",
+      archivos: "foto_incidente.jpg",
+      estado: "Finalizado",
+    },
+  ]);
 
   const [busqueda, setBusqueda] = useState("");
 
   const estados = ["Pendiente", "Revisado", "Finalizado"];
+
+  const iconosEstados: Record<string, string> = {
+    Pendiente: "🟦",
+    Revisado: "🟨",
+    Finalizado: "🟩",
+  };
 
   const obtenerListas = async () => {
     try {
@@ -70,7 +76,7 @@ const ListasReportes: React.FC = () => {
     }
   };
 
-/*  useEffect(() => {
+  /* useEffect(() => {
     obtenerListas();
   }, []);*/
 
@@ -161,8 +167,8 @@ const ListasReportes: React.FC = () => {
           const reportesFiltrados = filtrarPorEstado(estado);
           return (
             <div key={estado} className="mb-8">
-              <h4 className="font-semibold text-xl mb-4 text-indigo-700">
-                {estado}
+              <h4 className="font-semibold text-xl mb-4 text-indigo-700 flex items-center gap-2">
+                {iconosEstados[estado]} {estado}
               </h4>
 
               {reportesFiltrados.length === 0 ? (
@@ -182,7 +188,7 @@ const ListasReportes: React.FC = () => {
                       <div className="text-gray-600 text-sm">
                         Cargo: {item.cargo_usuario} | Estado:{" "}
                         <span className="font-semibold text-indigo-600">
-                          {item.estado}
+                          {iconosEstados[item.estado]} {item.estado}
                         </span>
                       </div>
                     </div>
@@ -205,16 +211,14 @@ const ListasReportes: React.FC = () => {
                           {estados.map((e) => (
                             <button
                               key={e}
-                              onClick={() =>
-                                cambiarEstado(item.id_reporte, e)
-                              }
-                              className={`block px-5 py-2 text-sm w-full text-left text-gray-800 transition hover:bg-indigo-100 ${
+                              onClick={() => cambiarEstado(item.id_reporte, e)}
+                              className={`block px-5 py-2 text-sm w-full text-left transition hover:bg-indigo-100 ${
                                 item.estado === e
                                   ? "font-bold text-indigo-600"
-                                  : ""
+                                  : "text-gray-800"
                               }`}
                             >
-                              {e}
+                              {iconosEstados[e]} {e}
                             </button>
                           ))}
                         </div>
